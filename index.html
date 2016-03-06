@@ -1,25 +1,68 @@
 <html>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
 	<head>
- 		<title>Las Antipodas</title>
+ 		<title>Las Antipodas y mi posicion actual</title>
+ 		<meta charset="utf-8">
 		<style>
-			#map {
+			#myMap,#antipods {
 				width:500px;
 				height: 400px;
 			}
  		</style>
  	</head>
 	<body>
-        	<p id='map'></p>
+			<h1>Mi localizacion</h1>
+        	<p id='myMap'></p>
+        	<h1>Antipodas</h1>
+        	<p id='antipods'></p>
+
   	        <script type="text/javascript" charset="utf-8">
-            function initMap(){
-                var mapDiv = document.getElementById("map");
+
+  	        function localizar(){
+        		navigator.geolocation.getCurrentPosition(initMap,error);
+      		}
+
+            function initMap(position){
+
+                var mapDiv = document.getElementById("myMap");
+
+                var latitud = position.coords.latitude;
+    			var longitud = position.coords.longitude;
+
 				var map = new google.maps.Map(mapDiv, {
-					center: {lat: 40.283743650362996, lng: -3.8191530513763428},
+					center: {lat: latitud, lng: longitud},
 					zoom: 15
 				});
  			}
+
+ 			function error(error){
+         		if(error.code == 0)
+            		alert("Error Desconocido");
+		        else if(error.code == 1)
+		             alert("No fue posible contactarte");
+		        else if(error.code == 2)
+		            alert("No hay una ubicacion disponible");
+		        else if(error.code == 3)
+		            alert("Tiempo agotado");
+        		else
+            		alert("Error Desconocido");
+        	}
+
+
  		</script>
-		<script src = "https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
+
+ 		<script type="text/javascript" charset="utf-8">
+ 			function antipodsMap(){
+ 				var map2 = document.getElementById("antipods");
+
+ 				var antMap = new google.maps.Map(map2, {
+					center: {lat: -0.323522, lng: 102.276001},
+					zoom: 10
+				});
+ 			}
+ 		</script>
+
+		<script src = "https://maps.googleapis.com/maps/api/js?callback=localizar" async defer></script>
+		<script src = "https://maps.googleapis.com/maps/api/js?callback=antipodsMap" async defer></script>
 	</body>
 </html>
